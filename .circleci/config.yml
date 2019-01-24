@@ -13,7 +13,7 @@ jobs:
             - run: sudo php -d memory_limit=-1 composer.phar dump-autoload --optimize --apcu
             - run: sudo php -d memory_limit=-1 composer.phar require "squizlabs/php_codesniffer=*"
             - run: sudo php -d memory_limit=-1 composer.phar require "phpstan/phpstan-symfony"
-            - run: vendor/bin/phpcs --standard=PSR1,PSR2 --ignore=src/AppBundle/Domains/DoctrineMigrations/*,src/DataFixtures/* src/
+            - run: vendor/bin/phpcs --standard=PSR1,PSR2 --ignore=src/Domain/DoctrineMigrations/*,src/DataFixtures/* src/
             - run: vendor/bin/phpstan analyse src
             - run: ./bin/console d:d:c --env=test
             - run: ./bin/console d:s:u --env=test --force
