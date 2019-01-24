@@ -1,0 +1,32 @@
+version: 2
+jobs:
+    checker:
+        docker:
+            - image: circleci/php:7.2-fpm
+        steps:
+            - checkout
+            - run: sudo php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+            - run: sudo php -r "if (hash_file('sha384', 'composer-setup.php') === '93b54496392c062774670ac18b134c3b3a95e5a5e5c8f1a9f115f203b75bf9a129d5daa8ba6a13e2cc8a1da0806388a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+            - run: sudo php composer-setup.php
+            - run: sudo php -r "unlink('composer-setup.php');"
+            - run: sudo php -d memory_limit=-1 composer.phar install -n --optimize-autoloader --apcu-autoloader
+            - run: sudo php -d memory_limit=-1 composer.phar dump-autoload --optimize --apcu
+            - run: sudo php -d memory_limit=-1 composer.phar require "squizlabs/php_codesniffer=*"
+            - run: sudo php -d memory_limit=-1 composer.phar require "phpstan/phpstan-symfony"
+            - run: vendor/bin/phpcs --standard=PSR1,PSR2 --ignore=src/AppBundle/Domains/DoctrineMigrations/*,src/DataFixtures/* src/
+            - run: vendor/bin/phpstan analyse src
+            - run: ./bin/console d:d:c --env=test
+            - run: ./bin/console d:s:u --env=test --force
+            - run:
+                  name: Install PHP libzip-dev
+                  command: sudo apt-get install -y libzip-dev
+            - run:
+                  name: Install PHP zip
+                  command: sudo docker-php-ext-install zip
+            - run: vendor/bin/behat -v
+
+workflows:
+    version: 2
+    checker:
+        jobs:
+            - checker
