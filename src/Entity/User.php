@@ -209,11 +209,11 @@ class User extends AbstractEntity implements UserInterface
 
     public function getSalt()
     {
-        return;
+        return null;
     }
 
     public function eraseCredentials()
     {
-        return;
+        return null;
     }
 }

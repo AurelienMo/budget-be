@@ -46,7 +46,9 @@ class AuthenticationSuccessListener
                 'name' => $group->getName(),
                 'slug' => $group->getSlug(),
                 'owner' => sprintf(
-                    '%s %s', $group->getOwner()->getFirstname(), $group->getOwner()->getLastname()
+                    '%s %s',
+                    $group->getOwner()->getFirstname(),
+                    $group->getOwner()->getLastname()
                 )
             ];
         }
