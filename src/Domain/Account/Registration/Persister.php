@@ -74,7 +74,10 @@ class Persister extends AbstractPersister
             );
         }
 
-        //TODO Dispatch mail event
+        $this->eventDispatcher->dispatch(
+            RegistrationMailEvent::MAIL_REGISTRATION_EVENT,
+            new RegistrationMailEvent($user)
+        );
 
         return null;
     }

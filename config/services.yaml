@@ -6,6 +6,10 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $paramsAppMail:
+                email: 'budget-app@yopmail.com'
+                name: 'Application Budget'
 
     App\:
         resource: '../src/*'
