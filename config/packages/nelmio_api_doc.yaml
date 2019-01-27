@@ -47,11 +47,7 @@ nelmio_api_doc:
                       name: body
                       required: true
                       schema:
-                          $ref: "#/definitions/ConfirmAccountInput"
-                    - in: query
-                      name: tokenActivation
-                      type: string
-                      required: true
+                          $ref: "#/definitions/EmailInput"
                 responses:
                     '200':
                         description: Successful registration confirmation
@@ -59,7 +55,23 @@ nelmio_api_doc:
                             $ref: "#/definitions/AuthenticationOutput"
                     '400':
                         description: Bad request. Check your request.
-
+            /api/accounts/recovery-password:
+                post:
+                    tags:
+                        - Account
+                    summarry: Recovery password
+                    description: Send a recovery password request.
+                parameters:
+                    - in: body
+                      name: body
+                      required: true
+                      schema:
+                          $ref: "#/definitions/EmailInput"
+                resposnes:
+                    '201':
+                        description: Successful recovery password request
+                    '400':
+                        description: Bad request. Check your request
 
         definitions:
             AuthenticationOutput:
@@ -99,7 +111,7 @@ nelmio_api_doc:
                             owner:
                                 type: string
                                 required: false
-            ConfirmAccountInput:
+            EmailInput:
                 type: object
                 properties:
                     email:
