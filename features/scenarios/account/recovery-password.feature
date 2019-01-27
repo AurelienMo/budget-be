@@ -46,4 +46,4 @@ Feature: As an anonymous user, I need to be able to send a recovery password req
     And user "johndoe" should have a tokenResetPassword
     And user "johndoe" should have status "locked"
     And 1 mails should have been sent
-    And a mail should have been sent to "johndoe@yopmail.com" with subject "[Budget Application] Demande nouveau mot de passe"
+    And a mail should have been sent to "johndoe@yopmail.com" with subject "[Budget Application] Demande de réinitialisation de mot de passe"

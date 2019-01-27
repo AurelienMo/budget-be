@@ -43,7 +43,10 @@ class Persister extends AbstractPersister
         if (!is_null($user)) {
             $user->reinitPassword(TokenGenerator::generateToken());
             $this->persistSave();
-            //TODO Dispatch mail recovery
+            $this->eventDispatcher->dispatch(
+                MailRecoveryPasswordEvent::MAIL_RECOVERY_PASSWORD,
+                new MailRecoveryPasswordEvent($user)
+            );
         }
 
         return null;
