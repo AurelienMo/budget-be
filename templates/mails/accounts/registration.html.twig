@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title></title>
+</head>
+<body>
+<div>
+    <div>
+        <p>Bonjour {{ user.firstname }} {{ user.lastname }},</p>
+        <p>
+            Nous vous remercions pour votre inscription sur la plateforme de gestion de budget.
+        </p>
+        <p>
+            Afin de valider votre inscription, nous vous invitons à cliquer sur le lien suivant:<br/>
+            <a href="{{ baseUrlFront }}/compte/activer?tokenActivation={{ user.tokenActivation }}">Activer mon compte</a>
+        </p>
+    </div>
+</div>
+
+{% block body %}{% endblock %}
+</body>
+</html>

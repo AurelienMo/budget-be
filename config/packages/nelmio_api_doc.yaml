@@ -4,8 +4,8 @@ nelmio_api_doc:
             - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
     documentation:
         info:
-            title: My App
-            description: This is an awesome app!
+            title: Budget API
+            description: All API related Budget application
             version: 1.0.0
         paths:
             /api/login_check:
@@ -19,6 +19,23 @@ nelmio_api_doc:
                         required: true
                         schema:
                             $ref: "#/definitions/AuthenticationContent"
+            /api/accounts:
+                post:
+                    tags:
+                        - Account
+                    sumarry: Registration
+                    description: Allow user to register to application
+                parameters:
+                    -   in: body
+                        name: body
+                        required: true
+                        schema:
+                            $ref: "#/definitions/RegistrationInput"
+                responses:
+                    '201':
+                        description: Successful registration
+                    '400':
+                        description: Bad request. Check your request
         definitions:
             AuthenticationContent:
                 type: object
@@ -27,5 +44,23 @@ nelmio_api_doc:
                         type: string
                         required: true
                     password:
+                        type: string
+                        required: true
+            RegistrationInput:
+                type: object
+                properties:
+                    firstname:
+                        type: string
+                        required: true
+                    lastname:
+                        type: string
+                        required: true
+                    username:
+                        type: string
+                        required: true
+                    password:
+                        type: string
+                        required: true
+                    email:
                         type: string
                         required: true

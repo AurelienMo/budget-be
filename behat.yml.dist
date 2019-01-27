@@ -9,6 +9,8 @@ default:
                     encoderFactory: '@security.encoder_factory.generic'
                 - CustomRestContext
                 - behatch:context:json
+                - MailContext:
+                    kernel: '@kernel'
 
 
     extensions:

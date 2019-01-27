@@ -1,0 +1,4 @@
+swiftmailer:
+    spool:
+        type: file
+    disable_delivery: true
