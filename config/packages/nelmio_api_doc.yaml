@@ -19,6 +19,22 @@ nelmio_api_doc:
                         required: true
                         schema:
                             $ref: "#/definitions/AuthenticationContent"
+            /account/registration:
+                post:
+                    tags:
+                        - Account
+                    sumarry: Registration
+                parameters:
+                    -   in: body
+                        name: body
+                        required: true
+                        schema:
+                            $ref: "#/definitions/RegistrationInput"
+                responses:
+                    '201':
+                        description: Successful registration
+                    '400':
+                        description: Bad request. Check your request
         definitions:
             AuthenticationContent:
                 type: object
@@ -27,5 +43,23 @@ nelmio_api_doc:
                         type: string
                         required: true
                     password:
+                        type: string
+                        required: true
+            RegistrationInput:
+                type: object
+                properties:
+                    firstname:
+                        type: string
+                        required: true
+                    lastname:
+                        type: string
+                        required: true
+                    username:
+                        type: string
+                        required: true
+                    password:
+                        type: string
+                        required: true
+                    email:
                         type: string
                         required: true
