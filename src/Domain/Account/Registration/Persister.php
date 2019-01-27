@@ -55,12 +55,14 @@ class Persister extends AbstractPersister
      */
     public function save(?InputInterface $input = null): ?string
     {
+        /** @var RegistrationInput $registrationInput */
+        $registrationInput = $input;
         $user = UserFactory::create(
-            $input->getFirstname(),
-            $input->getLastname(),
-            $input->getUsername(),
-            $this->getEncoder()->encodePassword($input->getPassword(), ''),
-            $input->getEmail(),
+            $registrationInput->getFirstname(),
+            $registrationInput->getLastname(),
+            $registrationInput->getUsername(),
+            $this->getEncoder()->encodePassword($registrationInput->getPassword(), ''),
+            $registrationInput->getEmail(),
             TokenGenerator::generateToken()
         );
         try {
