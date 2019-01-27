@@ -16,11 +16,19 @@ namespace App\Domain\Account\ConfirmRegistration\Validators;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class TokenNotFound
+ * Class ConfirmClassInput
  *
  * @Annotation
  */
-class TokenNotFound extends Constraint
+class ConfirmClassInput extends Constraint
 {
-    public $message = 'Token not found';
+    public $message = 'Value invalid';
+
+    /**
+     * @return array|string
+     */
+    public function getTargets()
+    {
+        return self::CLASS_CONSTRAINT;
+    }
 }

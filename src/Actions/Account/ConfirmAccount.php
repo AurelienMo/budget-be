@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace App\Actions\Account;
 
 use App\Actions\AbstractApiAction;
+use App\Domain\Account\ConfirmRegistration\RequestResolver;
+use App\Domain\Common\Exceptions\ValidatorException;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,12 +26,28 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ConfirmAccount extends AbstractApiAction
 {
+    /** @var RequestResolver */
+    protected $resolver;
+
+    /**
+     * ConfirmAccount constructor.
+     *
+     * @param RequestResolver $resolver
+     */
+    public function __construct(
+        RequestResolver $resolver
+    ) {
+        $this->resolver = $resolver;
+    }
+
     /**
      * @Route("/accounts/confirm", name="confirm_account", methods={"POST"})
      *
      * @param Request $request
      *
      * @return Response
+     *
+     * @throws ValidatorException
      *
      * @SWG\Response(
      *     response="200",
@@ -43,5 +61,8 @@ class ConfirmAccount extends AbstractApiAction
      */
     public function confirm(Request $request)
     {
+        $input = $this->resolver->resolve($request);
+
+        return $this->sendResponse();
     }
 }

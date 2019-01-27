@@ -39,7 +39,7 @@ Feature: As an anonymous user, I need to be able to activate my account
     And the JSON should be equal to:
     """
     {
-        "token": [
+        "": [
             "L'identifiant unique fourni est incorrect."
         ]
     }
@@ -56,7 +56,7 @@ Feature: As an anonymous user, I need to be able to activate my account
     And the JSON should be equal to:
     """
     {
-        "email": [
+        "": [
             "Merci de vérifier l'adresse email avec laquelle vous vous êtes inscrit dans votre boite mail."
         ]
     }

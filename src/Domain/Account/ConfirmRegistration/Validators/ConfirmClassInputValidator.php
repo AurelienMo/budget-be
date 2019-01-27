@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Domain\Account\ConfirmRegistration\Validators;
 
 use App\Domain\Account\ConfirmRegistration\ConfirmRegistrationInput;
+use App\Domain\Common\Repository\UserRepository;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -21,15 +22,15 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Class InvalidEmailValidator
+ * Class ConfirmClassInputValidator
  */
-class InvalidEmailValidator extends ConstraintValidator
+class ConfirmClassInputValidator extends ConstraintValidator
 {
     /** @var EntityManagerInterface */
     protected $entityManager;
 
     /**
-     * InvalidEmailValidator constructor.
+     * ConfirmClassInputValidator constructor.
      *
      * @param EntityManagerInterface $entityManager
      */
@@ -39,9 +40,10 @@ class InvalidEmailValidator extends ConstraintValidator
         $this->entityManager = $entityManager;
     }
 
+
     /**
-     * @param mixed      $value
-     * @param Constraint $constraint
+     * @param ConfirmRegistrationInput $value
+     * @param Constraint               $constraint
      *
      * @throws NonUniqueResultException
      */
@@ -49,14 +51,23 @@ class InvalidEmailValidator extends ConstraintValidator
         $value,
         Constraint $constraint
     ) {
-        /** @var ConfirmRegistrationInput $object */
-        $object = $this->context->getObject();
         /** @var User $user */
-        $user = $this->entityManager->getRepository(User::class)->loadByTokenActivation($object->getToken());
 
-        if ($user->getEmail() !== $value) {
-            $this->context->buildViolation($constraint->message)
-                          ->addViolation();
+        if ($value->getToken() && $value->getEmail()) {
+            /** @var UserRepository $repo */
+            $repo = $this->entityManager->getRepository(User::class);
+            $user = $repo->loadByTokenActivation($value->getToken());
+
+            if (is_null($user)) {
+                $this->context->buildViolation('L\'identifiant unique fourni est incorrect.')
+                              ->addViolation();
+            }
+            if ($user && $value->getEmail() !== $user->getEmail()) {
+                $this->context->buildViolation(
+                    'Merci de vérifier l\'adresse email avec laquelle vous vous êtes inscrit dans votre boite mail.'
+                )
+                    ->addViolation();
+            }
         }
     }
 }

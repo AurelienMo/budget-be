@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace App\Domain\Account\ConfirmRegistration;
 
-use App\Domain\Account\ConfirmRegistration\Validators\InvalidEmail;
-use App\Domain\Account\ConfirmRegistration\Validators\TokenNotFound;
+use App\Domain\Account\ConfirmRegistration\Validators\ConfirmClassInput;
 use App\Domain\InputInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class ConfirmRegistrationInput
+ *
+ * @ConfirmClassInput()
  */
 class ConfirmRegistrationInput implements InputInterface
 {
@@ -29,9 +30,6 @@ class ConfirmRegistrationInput implements InputInterface
      * @Assert\NotBlank(
      *     message="Une adresse email est requise."
      * )
-     * @InvalidEmail(
-     *     message="Merci de vérifier l'adresse email avec laquelle vous vous êtes inscrit dans votre boite mail."
-     * )
      */
     protected $email;
 
@@ -40,9 +38,6 @@ class ConfirmRegistrationInput implements InputInterface
      *
      * @Assert\NotBlank(
      *     message="Identifiant unique non trouvé."
-     * )
-     * @TokenNotFound(
-     *     message="L'identifiant unique fourni est incorrect."
      * )
      */
     protected $token;
