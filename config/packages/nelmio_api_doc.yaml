@@ -36,7 +36,75 @@ nelmio_api_doc:
                         description: Successful registration
                     '400':
                         description: Bad request. Check your request
+            /api/accounts/confirm:
+                post:
+                    tags:
+                        - Account
+                    summarry: Confirmation account
+                    description: Allow user to confirm registration
+                parameters:
+                    - in: body
+                      name: body
+                      required: true
+                      schema:
+                          $ref: "#/definitions/ConfirmAccountInput"
+                    - in: query
+                      name: tokenActivation
+                      type: string
+                      required: true
+                responses:
+                    '200':
+                        description: Successful registration confirmation
+                        schema:
+                            $ref: "#/definitions/AuthenticationOutput"
+                    '400':
+                        description: Bad request. Check your request.
+
+
         definitions:
+            AuthenticationOutput:
+                type: object
+                properties:
+                    token:
+                        type: string
+                        required: true
+                    user:
+                        type: object
+                        properties:
+                            firstname:
+                                type: string
+                                required: true
+                            lastname:
+                                type: string
+                                required: true
+                            username:
+                                type: string
+                                required: true
+                            email:
+                                type: string
+                                required: true
+                            roles:
+                                type: array
+                                items:
+                                    type: string
+                    group:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                required: false
+                            slug:
+                                type: string
+                                required: false
+                            owner:
+                                type: string
+                                required: false
+            ConfirmAccountInput:
+                type: object
+                properties:
+                    email:
+                        type: string
+                        required: true
             AuthenticationContent:
                 type: object
                 properties:
