@@ -118,4 +118,17 @@ class DoctrineContext implements Context
         $user = $this->getManager()->getRepository(User::class)->loadUserByUsername($identifier);
         $user->enableUser();
     }
+
+    /**
+     * @Then user :identifier should exist into database
+     */
+    public function userShouldExistIntoDatabase($identifier)
+    {
+        $user = $this->getManager()->getRepository(User::class)->loadUserByUsername($identifier);
+
+        if (!$user) {
+            throw new Exception(sprintf('User with identifier %s should exist', $identifier));
+        }
+    }
+
 }

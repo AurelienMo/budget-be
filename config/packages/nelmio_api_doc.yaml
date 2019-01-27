@@ -4,8 +4,8 @@ nelmio_api_doc:
             - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
     documentation:
         info:
-            title: My App
-            description: This is an awesome app!
+            title: Budget API
+            description: All API related Budget application
             version: 1.0.0
         paths:
             /api/login_check:
@@ -19,11 +19,12 @@ nelmio_api_doc:
                         required: true
                         schema:
                             $ref: "#/definitions/AuthenticationContent"
-            /account/registration:
+            /api/accounts:
                 post:
                     tags:
                         - Account
                     sumarry: Registration
+                    description: Allow user to register to application
                 parameters:
                     -   in: body
                         name: body

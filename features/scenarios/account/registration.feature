@@ -112,3 +112,4 @@ Feature: As an anonymous user, I need to be able to submit registration request
     """
     Then the response status code should be 201
     And the response should be empty
+    And user "janedoe" should exist into database
