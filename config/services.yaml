@@ -18,3 +18,16 @@ services:
     App\Domain\Common\Subscribers\TimestampableSubscriber:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
+
+    App\Domain\Account\Authentication\Subscribers\AuthenticationSuccessListener:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+    App\Domain\Account\Authentication\Subscribers\AuthenticationFailureListener:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_failure, method: onAuthenticationFailureResponse }
+    App\Domain\Account\Authentication\Subscribers\JWTInvalidListener:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_invalid, method: onJWTInvalid }
+    App\Domain\Account\Authentication\Subscribers\JWTExpiredListener:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_expired, method: onJWTExpired }
