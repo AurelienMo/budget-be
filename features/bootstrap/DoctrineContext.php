@@ -131,4 +131,21 @@ class DoctrineContext implements Context
         }
     }
 
+    /**
+     * @Then user :identifier should have status :status
+     */
+    public function userShouldHaveStatus($identifier, $status)
+    {
+        /** @var User $user */
+        $user = $this->getManager()->getRepository(User::class)->loadUserByUsername($identifier);
+
+        if ($user->getStatus() !== $status) {
+            throw new Exception(
+                sprintf(
+                    'User should be have status %s, %s occured',
+                    $status, $user->getStatus()
+                )
+            );
+        }
+    }
 }

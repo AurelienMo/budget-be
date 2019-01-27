@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 abstract class AbstractApiAction
 {
     /**
-     * @param null  $datas
+     * @param null|string  $datas
      * @param int   $statusCode
      * @param bool  $cacheable
      * @param array $headers
@@ -30,7 +30,7 @@ abstract class AbstractApiAction
      * @return Response
      */
     public function sendResponse(
-        $datas = null,
+        $datas,
         int $statusCode = Response::HTTP_OK,
         bool $cacheable = false,
         array $headers = []

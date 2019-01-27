@@ -38,4 +38,20 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
                     ->getQuery()
                     ->getOneOrNullResult();
     }
+
+    /**
+     * @param string $tokenActivation
+     *
+     * @return mixed|UserInterface|null
+     *
+     * @throws NonUniqueResultException
+     */
+    public function loadByTokenActivation(string $tokenActivation)
+    {
+        return $this->createQueryBuilder('u')
+                    ->where('u.tokenActivation = :tokenActivation')
+                    ->setParameter('tokenActivation', $tokenActivation)
+                    ->getQuery()
+                    ->getOneOrNullResult();
+    }
 }
