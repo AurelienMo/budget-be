@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace App\Actions\Account;
 
 use App\Actions\AbstractApiAction;
+use App\Domain\Account\RecoveryPassword\RequestResolver;
+use App\Domain\Common\Exceptions\ValidatorException;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,12 +26,28 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class RecoveryPassword extends AbstractApiAction
 {
+    /** @var RequestResolver */
+    protected $resolver;
+
+    /**
+     * RecoveryPassword constructor.
+     *
+     * @param RequestResolver $resolver
+     */
+    public function __construct(
+        RequestResolver $resolver
+    ) {
+        $this->resolver = $resolver;
+    }
+
     /**
      * @Route("/accounts/recovery-password", name="recovery_passwordd", methods={"POST"})
      *
      * @param Request $request
      *
      * @return Response
+     *
+     * @throws ValidatorException
      *
      * @SWG\Response(
      *     response="201",
@@ -42,6 +60,6 @@ class RecoveryPassword extends AbstractApiAction
      */
     public function recoveryPassword(Request $request)
     {
-
+        $input = $this->resolver->resolve($request);
     }
 }
