@@ -71,9 +71,7 @@ class Persister extends AbstractPersister
         $user->enableUser();
         $this->persistSave();
 
-        return json_encode(
-            $this->buildOutput($user)
-        );
+        return $this->buildOutput($user);
     }
 
     protected function getClassEntityName(): string
@@ -84,19 +82,24 @@ class Persister extends AbstractPersister
     /**
      * @param User $user
      *
-     * @return array
+     * @return string|null
      */
     private function buildOutput(User $user)
     {
-        return [
-            'token' => $this->jwtManager->create($user),
-            'user' => [
-                'firstname' => $user->getFirstname(),
-                'lastname' => $user->getLastname(),
-                'username' => $user->getUsername(),
-                'email' => $user->getEmail(),
-                'roles' => $user->getRoles(),
-            ],
-        ];
+        /** @var string|null $datas */
+        $datas = json_encode(
+            [
+                'token' => $this->jwtManager->create($user),
+                'user' => [
+                    'firstname' => $user->getFirstname(),
+                    'lastname' => $user->getLastname(),
+                    'username' => $user->getUsername(),
+                    'email' => $user->getEmail(),
+                    'roles' => $user->getRoles(),
+                ],
+            ]
+        );
+
+        return $datas;
     }
 }
