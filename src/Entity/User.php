@@ -15,14 +15,15 @@ namespace App\Entity;
 
 use App\Domain\Common\Helpers\RolesList;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class User
  *
  * @ORM\Table(name="amo_user")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Domain\Common\Repository\UserRepository")
  */
-class User extends AbstractEntity
+class User extends AbstractEntity implements UserInterface
 {
     const STATUS_PENDING_ACTIVATION = 'pending_activation';
     const STATUS_ACTIVATED = 'activated';
@@ -198,5 +199,21 @@ class User extends AbstractEntity
     public function getGroupUser(): ?GroupUser
     {
         return $this->groupUser;
+    }
+
+    public function enableUser()
+    {
+        $this->status = self::STATUS_ACTIVATED;
+        $this->tokenActivation = null;
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+        return null;
     }
 }

@@ -1,9 +1,31 @@
 nelmio_api_doc:
+    areas:
+        path_patterns:
+            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
     documentation:
         info:
             title: My App
             description: This is an awesome app!
             version: 1.0.0
-    areas:
-        path_patterns:
-            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
+        paths:
+            /api/login_check:
+                post:
+                    tags:
+                        - Security
+                    sumarry: Authentication
+                parameters:
+                    -   in: body
+                        name: body
+                        required: true
+                        schema:
+                            $ref: "#/definitions/AuthenticationContent"
+        definitions:
+            AuthenticationContent:
+                type: object
+                properties:
+                    username:
+                        type: string
+                        required: true
+                    password:
+                        type: string
+                        required: true
