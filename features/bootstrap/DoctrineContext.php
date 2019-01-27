@@ -121,6 +121,8 @@ class DoctrineContext implements Context
 
     /**
      * @Then user :identifier should exist into database
+     *
+     * @throws NonUniqueResultException
      */
     public function userShouldExistIntoDatabase($identifier)
     {
@@ -133,6 +135,8 @@ class DoctrineContext implements Context
 
     /**
      * @Then user :identifier should have status :status
+     *
+     * @throws NonUniqueResultException
      */
     public function userShouldHaveStatus($identifier, $status)
     {
@@ -146,6 +150,21 @@ class DoctrineContext implements Context
                     $status, $user->getStatus()
                 )
             );
+        }
+    }
+
+    /**
+     * @Then user :identifier should have a tokenResetPassword
+     *
+     * @throws NonUniqueResultException
+     */
+    public function userShouldHaveATokenresetpassword($identifier)
+    {
+        /** @var User $user */
+        $user = $this->getManager()->getRepository(User::class)->loadUserByUsername($identifier);
+
+        if (is_null($user->getTokenResetPassword())) {
+            throw new Exception('User should have a token reset password');
         }
     }
 }

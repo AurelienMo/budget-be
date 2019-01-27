@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Common\Subscribers;
 
+use App\Domain\Account\RecoveryPassword\MailRecoveryPasswordEvent;
 use App\Domain\Account\Registration\RegistrationMailEvent;
 use App\Domain\Common\Helpers\Mailer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -46,6 +47,7 @@ class MailSubscriber implements EventSubscriberInterface
     {
         return [
             RegistrationMailEvent::MAIL_REGISTRATION_EVENT => 'onRegistration',
+            MailRecoveryPasswordEvent::MAIL_RECOVERY_PASSWORD => 'onRecoveryPassword',
         ];
     }
 
@@ -66,6 +68,29 @@ class MailSubscriber implements EventSubscriberInterface
             ],
             RegistrationMailEvent::SUBJECT,
             RegistrationMailEvent::TEMPLATE_MAIL,
+            [
+                'user' => $event->getUser(),
+            ]
+        );
+    }
+
+    /**
+     * @param MailRecoveryPasswordEvent $event
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+    public function onRecoveryPassword(MailRecoveryPasswordEvent $event)
+    {
+        $this->mailer->sendMail(
+            $this->paramsAppMail,
+            [
+                'email' => $event->getUser()->getEmail(),
+                'name' => sprintf('%s %s', $event->getUser()->getFirstname(), $event->getUser()->getLastname()),
+            ],
+            MailRecoveryPasswordEvent::SUBJECT,
+            MailRecoveryPasswordEvent::TEMPLATE_MAIL,
             [
                 'user' => $event->getUser(),
             ]
