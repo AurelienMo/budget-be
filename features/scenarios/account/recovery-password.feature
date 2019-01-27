@@ -43,7 +43,7 @@ Feature: As an anonymous user, I need to be able to send a recovery password req
     }
     """
     Then the response status code should be 201
-    And 1 mails should have been sent
-    And a mail should have been sent to "johndoe@yopmail.com" with subject "[Budget Application] Demande nouveau mot de passe"
     And user "johndoe" should have a tokenResetPassword
     And user "johndoe" should have status "locked"
+    And 1 mails should have been sent
+    And a mail should have been sent to "johndoe@yopmail.com" with subject "[Budget Application] Demande nouveau mot de passe"

@@ -216,4 +216,13 @@ class User extends AbstractEntity implements UserInterface
     {
         return null;
     }
+
+    /**
+     * @param string $token
+     */
+    public function reinitPassword(string $token)
+    {
+        $this->tokenResetPassword = $token;
+        $this->status = self::STATUS_LOCK;
+    }
 }

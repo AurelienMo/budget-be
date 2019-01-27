@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace App\Actions\Account;
 
 use App\Actions\AbstractApiAction;
+use App\Domain\Account\RecoveryPassword\Persister;
 use App\Domain\Account\RecoveryPassword\RequestResolver;
 use App\Domain\Common\Exceptions\ValidatorException;
+use Doctrine\ORM\NonUniqueResultException;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,15 +31,21 @@ class RecoveryPassword extends AbstractApiAction
     /** @var RequestResolver */
     protected $resolver;
 
+    /** @var Persister */
+    protected $persister;
+
     /**
      * RecoveryPassword constructor.
      *
      * @param RequestResolver $resolver
+     * @param Persister       $persister
      */
     public function __construct(
-        RequestResolver $resolver
+        RequestResolver $resolver,
+        Persister $persister
     ) {
         $this->resolver = $resolver;
+        $this->persister = $persister;
     }
 
     /**
@@ -48,6 +56,7 @@ class RecoveryPassword extends AbstractApiAction
      * @return Response
      *
      * @throws ValidatorException
+     * @throws NonUniqueResultException
      *
      * @SWG\Response(
      *     response="201",
@@ -61,5 +70,8 @@ class RecoveryPassword extends AbstractApiAction
     public function recoveryPassword(Request $request)
     {
         $input = $this->resolver->resolve($request);
+        $output = $this->persister->save($input);
+
+        return $this->sendResponse($output, Response::HTTP_CREATED);
     }
 }
