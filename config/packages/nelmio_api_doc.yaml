@@ -48,6 +48,11 @@ nelmio_api_doc:
                       required: true
                       schema:
                           $ref: "#/definitions/EmailInput"
+                    - in: query
+                      name: tokenActivation
+                      type: string
+                      required: true
+                      description: Token activation
                 responses:
                     '200':
                         description: Successful registration confirmation
@@ -67,11 +72,37 @@ nelmio_api_doc:
                       required: true
                       schema:
                           $ref: "#/definitions/EmailInput"
-                resposnes:
+                responses:
                     '201':
                         description: Successful recovery password request
                     '400':
                         description: Bad request. Check your request
+            /api/accounts/define-new-password:
+                post:
+                    tags:
+                        - Account
+                    summarry: Reinit password
+                    description: Send a request to reinit password
+                parameters:
+                    - in: body
+                      name: body
+                      required: true
+                      schema:
+                          $ref: "#/definitions/DefineNewPasswordInput"
+                    - in: query
+                      name: tokenResetPassword
+                      type: string
+                      required: true
+                      description: Token reset password to define new password
+                responses:
+                    '200':
+                        description: Successful reset password
+                        schema:
+                            $ref: "#/definitions/AuthenticationOutput"
+                    '400':
+                        description: Bad request. Please check your request
+
+
 
         definitions:
             AuthenticationOutput:
