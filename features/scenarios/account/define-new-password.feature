@@ -26,6 +26,9 @@ Feature: As an anonymous user, I need to be able to send a reset password reques
         "email": [
             "L'adresse email est requise."
         ],
+        "password": [
+            "Le mot de passe est requis."
+        ]
     }
     """
 
@@ -79,4 +82,4 @@ Feature: As an anonymous user, I need to be able to send a reset password reques
     And the JSON node "user.lastname" should be equal to "Doe"
     And the JSON node "user.username" should be equal to "johndoe"
     And the JSON node "user.email" should be equal to "johndoe@yopmail.com"
-    And the JSON node "user.roles" should contain "ROLE_USER"
+    And the JSON node "user.roles[0]" should be equal to "ROLE_USER"

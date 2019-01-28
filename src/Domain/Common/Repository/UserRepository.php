@@ -54,4 +54,20 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
                     ->getQuery()
                     ->getOneOrNullResult();
     }
+
+    /**
+     * @param string $tokenResetPassword
+     *
+     * @return mixed
+     *
+     * @throws NonUniqueResultException
+     */
+    public function loadByTokenResetPassword(string $tokenResetPassword)
+    {
+        return $this->createQueryBuilder('u')
+                    ->where('u.tokenResetPassword = :tokenResetPassword')
+                    ->setParameter('tokenResetPassword', $tokenResetPassword)
+                    ->getQuery()
+                    ->getOneOrNullResult();
+    }
 }
