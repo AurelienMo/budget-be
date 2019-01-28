@@ -1,0 +1,71 @@
+App\Entity\CfgBank:
+    cfg_bank.boursorama:
+        __construct: ['Boursorama']
+    cfg_bank.societe_generale:
+        __construct: ['Société Générale']
+    cfg_bank.la_poste:
+        __construct: ['La Banque Postale']
+    cfg_bank.ing_direct:
+        __construct: ['ING Direct']
+    cfg_bank.credit_mutuel:
+        __construct: ['Crédit Mutuel']
+    cfg_bank.caisse_epargne:
+        __construct: ["Caisse d'Epargne"]
+    cfg_bank.lcl:
+        __construct: ['LCL']
+    cfg_bank.credit_agricole:
+        __construct: ['Crédit Agricole']
+    cfg_bank.b_for_bank:
+        __construct: ['BforBank']
+    cfg_bank.fortuneo:
+        __construct: ['Fortuneo']
+    cfg_bank.hello_bank:
+        __construct: ['Hello bank']
+    cfg_bank.ing:
+        __construct: ['ING']
+    cfg_bank.monabanq:
+        __construct: ['Monabanq']
+    cfg_bank.orange_bank:
+        __construct: ['Orange Bank']
+    cfg_bank.banque_populaire:
+        __construct: ['Banque Populaire']
+    cfg_bank.cic:
+        __construct: ['CIC']
+    cfg_bank.bnp_paribas:
+        __construct: ['BNP Paripas']
+    cfg_bank.credit_du_nord:
+        __construct: ['Crédit du Nord']
+
+App\Entity\CfgTypeOperation:
+    cfg_type_operation.cheque:
+        __construct: ['Chèque']
+    cfg_type_operation.cb:
+        __construct: ['Carte Bleue']
+    cfg_type_operation.espece:
+        __construct: ['Espèces']
+    cfg_type_operation.virement:
+        __construct: ['Virement']
+    cfg_type_operation.prelevement:
+        __construct: ['Prélèvement']
+
+App\Entity\CfgCategoryOperation:
+    cfg_category_operation.ecole:
+        __construct: ['Ecoles']
+    cfg_category_operation.edf:
+        __construct: ['EDF']
+    cfg_category_operation.gaz:
+        __construct: ['Gaz']
+    cfg_category_operation.assurances:
+        __construct: ['Assurances']
+    cfg_category_operation.telephone:
+        __construct: ['Téléphone']
+    cfg_category_operation.courses:
+        __construct: ['Courses']
+    cfg_category_operation.achat_internet:
+        __construct: ['Achat Internet']
+    cfg_category_operation.professionnel:
+        __construct: ['Dépenses professionnelles']
+    cfg_category_operation.loisir:
+        __construct: ['Loisirs']
+    cfg_category_operation.habitation:
+        __construct: ['Habitations']
