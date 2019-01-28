@@ -167,4 +167,18 @@ class DoctrineContext implements Context
             throw new Exception('User should have a token reset password');
         }
     }
+
+    /**
+     * @Given I reinit password for user :identifier with token :tokenResetPassword
+     *
+     * @throws NonUniqueResultException
+     */
+    public function iReinitPasswordForUserWithToken(string $identifier, string $tokenResetPassword)
+    {
+        /** @var User $user */
+        $user = $this->getManager()->getRepository(User::class)->loadUserByUsername($identifier);
+        $user->reinitPassword($tokenResetPassword);
+        $this->getManager()->flush();
+    }
+
 }

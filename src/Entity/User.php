@@ -225,4 +225,14 @@ class User extends AbstractEntity implements UserInterface
         $this->tokenResetPassword = $token;
         $this->status = self::STATUS_LOCK;
     }
+
+    /**
+     * @param string $encodePassword
+     */
+    public function defineNewPassword(string $encodePassword)
+    {
+        $this->password = $encodePassword;
+        $this->status = self::STATUS_ACTIVATED;
+        $this->tokenResetPassword = null;
+    }
 }
