@@ -85,4 +85,19 @@ class CustomRestContext extends RestContext
         );
         return $requestLogin->getContent();
     }
+
+    /**
+     * @Then the response should be equal to following file :file
+     */
+    public function theResponseShouldBeEqualToFollowingFile($file)
+    {
+        $contentFileExpected = file_get_contents(__DIR__.'/../scenarios/'.$file);
+        $actualContent = $this->request->getContent();
+
+        if (json_decode($contentFileExpected, true) !== json_decode($actualContent, true)) {
+            throw new Exception(
+                sprintf("'%s' expected", $actualContent)
+            );
+        }
+    }
 }
