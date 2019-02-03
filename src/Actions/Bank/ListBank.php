@@ -17,6 +17,7 @@ use App\Actions\AbstractApiAction;
 use App\Domain\Bank\ListBank\ListBankInput;
 use App\Domain\Bank\ListBank\Loader;
 use App\Domain\Bank\ListBank\RequestResolver;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -70,6 +71,7 @@ class ListBank extends AbstractApiAction
      *     description="Unauthorized. Please login",
      *     ref="#/definitions/JWTErrorOutput"
      * )
+     * @Security(name="Bearer")
      */
     public function listBank(Request $request)
     {

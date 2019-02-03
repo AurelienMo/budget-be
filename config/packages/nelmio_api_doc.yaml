@@ -122,15 +122,78 @@ nelmio_api_doc:
                       type: string
                       required: true
                       description: Search terms to return list bank
+                security: Bearer
                 responses:
                     '200':
                         description: Successful list bank according search filter
                         schema:
                             $ref: "#/definitions/ListBankOutput"
-
+            #### Bank Account ####
+            /api/bank-accounts:
+                post:
+                    tags:
+                        - Bank account
+                    summary: Create bank account
+                    description: Create bank account for auth user and return list bank account
+                parameters:
+                    - in: body
+                      name: body
+                      required: true
+                      schema:
+                          $ref: "#/definitions/PayloadNewBankAccountInput"
 
 
         definitions:
+            PayloadNewBankAccountInput:
+                type: object
+                properties:
+                    cfgBank:
+                        type: string
+                        required: true
+                    name:
+                        type: string
+                        required: true
+                    float:
+                        type: number
+                        required: true
+            ListBankAccountOutput:
+                type: array
+                items:
+                    $ref: "#/definitions/BankDetailOutput"
+            BankDetailOutput:
+                type: object
+                properties:
+                    id:
+                        type: string
+                        required: true
+                    name:
+                        type: string
+                        required: true
+                    initialBalance:
+                        type: number
+                        required: true
+                    balance:
+                        type: number
+                        required: true
+                    displayInGroup:
+                        type: boolean
+                        required: true
+                    createdAt:
+                        type: string
+                        required: true
+                    updatedAt:
+                        type: string
+                        required: true
+                    cfgBank:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                required: true
+                            slug:
+                                type: string
+                                required: true
+
             DefineNewPasswordInput:
                 type: object
                 properties:
