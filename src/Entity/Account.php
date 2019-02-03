@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Account
  *
  * @ORM\Table(name="amo_account")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Domain\Common\Repository\AccountRepository")
  */
 class Account extends AbstractEntity
 {

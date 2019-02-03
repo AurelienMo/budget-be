@@ -23,7 +23,7 @@ use Ramsey\Uuid\UuidInterface;
 abstract class AbstractEntity
 {
     /**
-     * @var string
+     * @var string|UuidInterface
      *
      * @ORM\Id
      * @ORM\Column(type="uuid")
@@ -55,11 +55,11 @@ abstract class AbstractEntity
     }
 
     /**
-     * @return string
+     * @return string|UuidInterface
      */
-    public function getId(): string
+    public function getId()
     {
-        return $this->id;
+        return is_object($this->id) ? $this->id->toString() : $this->id;
     }
 
     /**

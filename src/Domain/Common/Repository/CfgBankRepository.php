@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Common\Repository;
 
+use App\Entity\CfgBank;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 /**
  * Class CfgBankRepository
@@ -38,5 +41,22 @@ class CfgBankRepository extends EntityRepository
         return $qb
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param string $slug
+     *
+     * @return CfgBank
+     *
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function loadBySlug(string $slug)
+    {
+        return $this->createQueryBuilder('cb')
+                    ->where('cb.slug = :slug')
+                    ->setParameter('slug', $slug)
+                    ->getQuery()
+                    ->getSingleResult();
     }
 }
