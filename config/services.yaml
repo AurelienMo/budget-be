@@ -35,3 +35,7 @@ services:
     App\Domain\Account\Authentication\Subscribers\JWTExpiredListener:
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_expired, method: onJWTExpired }
+
+    App\Domain\Account\Authentication\Subscribers\JWTTokenNotFound:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_not_found, method: onJWTNotFound }

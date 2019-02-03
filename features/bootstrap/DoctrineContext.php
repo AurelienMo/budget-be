@@ -19,6 +19,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
@@ -181,4 +184,19 @@ class DoctrineContext implements Context
         $this->getManager()->flush();
     }
 
+    /**
+     * @Given I load production file
+     */
+    public function iLoadProductionFile()
+    {
+        $app = new Application($this->kernel);
+        $app->setAutoExit(false);
+        $input = new ArrayInput(
+            [
+                'command' => 'app:load-prod-fixtures',
+            ]
+        );
+        $output = new BufferedOutput();
+        $app->run($input, $output);
+    }
 }
