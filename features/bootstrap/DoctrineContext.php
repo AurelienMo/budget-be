@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 use App\Domain\Common\EntityFactory\UserFactory;
+use App\Entity\Account;
 use App\Entity\User;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -198,5 +199,54 @@ class DoctrineContext implements Context
         );
         $output = new BufferedOutput();
         $app->run($input, $output);
+    }
+
+    /**
+     * @Then user :identifier should have a bank account with name :nameBankAccount
+     *
+     * @throws NonUniqueResultException
+     */
+    public function userShouldHaveABankAccountWithName($identifier, $nameBankAccount)
+    {
+        $account = $this->getManager()->getRepository(Account::class)
+                                      ->findOneBy(
+                                          [
+                                              'user' => $this->getManager()->getRepository(User::class)->loadUserByUsername($identifier),
+                                              'name' => $nameBankAccount,
+                                          ]
+                                      );
+
+        if (!$account) {
+            throw new Exception(
+                sprintf("User '%s' should have an account with name '%s'", $identifier, $nameBankAccount)
+            );
+        }
+    }
+
+    /**
+     * @Then balance for account :nameBankAccount for user :identifier should be equal to :balance
+     *
+     * @throws NonUniqueResultException
+     */
+    public function balanceForAccountForUserShouldBeEqualTo($nameBankAccount, $identifier, $balance)
+    {
+        $account = $this->getManager()->getRepository(Account::class)
+            ->findOneBy(
+                [
+                    'user' => $this->getManager()->getRepository(User::class)->loadUserByUsername($identifier),
+                    'name' => $nameBankAccount,
+                ]
+            );
+
+        if ($account->getInitialBalance() !== (float) $balance) {
+            throw new Exception(
+                sprintf(
+                    "Account '%s' for user '%s' should have initial balance equal to '%s'",
+                    $nameBankAccount,
+                    $identifier,
+                    $balance
+                )
+            );
+        }
     }
 }
