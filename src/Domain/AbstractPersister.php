@@ -64,7 +64,7 @@ abstract class AbstractPersister
      */
     protected function getRepository(string $className = null)
     {
-        return $this->getRepository($className ?? $this->getClassEntityName());
+        return $this->getRepository($className ? $className : $this->getClassEntityName());
     }
 
     /**

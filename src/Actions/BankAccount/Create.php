@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Actions\Bank;
+namespace App\Actions\BankAccount;
 
 use App\Actions\AbstractApiAction;
-use App\Domain\Bank\ListBank\ListBankInput;
-use App\Domain\Bank\ListBank\Loader;
-use App\Domain\Bank\ListBank\RequestResolver;
+use App\Domain\BankAccount\Create\Persister;
+use App\Domain\BankAccount\Create\RequestResolver;
+use App\Domain\Common\Exceptions\ValidatorException;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,47 +24,48 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class ListBank
+ * Class Create
  */
-class ListBank extends AbstractApiAction
+class Create extends AbstractApiAction
 {
     /** @var RequestResolver */
     protected $resolver;
 
-    /** @var Loader */
-    protected $loader;
+    /** @var Persister */
+    protected $persister;
 
     /**
-     * ListBank constructor.
+     * Create constructor.
      *
      * @param RequestResolver $resolver
-     * @param Loader          $loader
+     * @param Persister       $persister
      */
     public function __construct(
         RequestResolver $resolver,
-        Loader $loader
+        Persister $persister
     ) {
         $this->resolver = $resolver;
-        $this->loader = $loader;
+        $this->persister = $persister;
     }
 
     /**
-     * @Route("/banks", name="list_bank_account", methods={"GET"})
+     * @Route("/bank-accounts", name="create_bank_account", methods={"POST"})
      *
      * @param Request $request
      *
      * @return Response
      *
-     * @throws \ReflectionException
+     * @throws ValidatorException
+     * @throws \Exception
      *
      * @SWG\Response(
-     *     response="200",
-     *     description="Successfull list bank according given parameters",
-     *     ref="#/definitions/ListBankOutput"
+     *     response="201",
+     *     description="Successful bank account creation",
+     *     ref="#/definitions/ListBankAccountOutput"
      * )
      * @SWG\Response(
-     *     response="204",
-     *     description="No content"
+     *     response="400",
+     *     description="Bad request. Check your request"
      * )
      * @SWG\Response(
      *     response="401",
@@ -73,15 +74,14 @@ class ListBank extends AbstractApiAction
      * )
      * @Security(name="Bearer")
      */
-    public function listBank(Request $request)
+    public function create(Request $request)
     {
-        /** @var ListBankInput $input */
         $input = $this->resolver->resolve($request);
-        $output = $this->loader->load($input);
+        $output = $this->persister->save($input);
 
         return $this->sendResponse(
             $output,
-            !is_null($output) ? Response::HTTP_OK : Response::HTTP_NO_CONTENT
+            Response::HTTP_CREATED
         );
     }
 }

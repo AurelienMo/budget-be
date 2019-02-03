@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<serializer xmlns="http://symfony.com/schema/dic/serializer-mapping"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping
+        http://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
+>
+    <class name="App\Entity\Account">
+        <attribute name="id">
+            <group>list_accounts</group>
+        </attribute>
+        <attribute name="name">
+            <group>list_accounts</group>
+        </attribute>
+        <attribute name="initialBalance">
+            <group>list_accounts</group>
+        </attribute>
+        <attribute name="balance">
+            <group>list_accounts</group>
+        </attribute>
+        <attribute name="displayInGroup">
+            <group>list_accounts</group>
+        </attribute>
+        <attribute name="createdAt">
+            <group>list_accounts</group>
+        </attribute>
+        <attribute name="updatedAt">
+            <group>list_accounts</group>
+        </attribute>
+        <attribute name="cfgBank">
+            <group>list_accounts</group>
+        </attribute>
+    </class>
+</serializer>

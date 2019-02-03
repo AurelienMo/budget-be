@@ -1,0 +1,11 @@
+{
+    "cfgBank": [
+        "Le choix de la banque est requis."
+    ],
+    "name": [
+        "Un nom de compte est requis."
+    ],
+    "initialBalance": [
+        "Un solde de création de compte initial est requis."
+    ]
+}

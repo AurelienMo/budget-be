@@ -7,9 +7,11 @@
     <class name="App\Entity\CfgBank">
         <attribute name="name">
             <group>list_bank</group>
+            <group>list_accounts</group>
         </attribute>
         <attribute name="slug">
             <group>list_bank</group>
+            <group>list_accounts</group>
         </attribute>
     </class>
 </serializer>
