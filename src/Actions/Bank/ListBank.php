@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Actions\Bank;
 
 use App\Actions\AbstractApiAction;
+use App\Domain\Bank\ListBank\ListBankInput;
 use App\Domain\Bank\ListBank\Loader;
 use App\Domain\Bank\ListBank\RequestResolver;
 use Swagger\Annotations as SWG;
@@ -72,6 +73,7 @@ class ListBank extends AbstractApiAction
      */
     public function listBank(Request $request)
     {
+        /** @var ListBankInput $input */
         $input = $this->resolver->resolve($request);
         $output = $this->loader->load($input);
 
