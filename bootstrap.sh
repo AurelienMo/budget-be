@@ -43,7 +43,7 @@ xdebug.show_local_vars=1
 EOT
 
 # MySQL
-mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS apiblog_practice CHARACTER SET utf8 COLLATE utf8_general_ci;"
+mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS budgetbe CHARACTER SET utf8 COLLATE utf8_general_ci;"
 
 # Composer
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

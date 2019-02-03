@@ -7,6 +7,13 @@ nelmio_api_doc:
             title: Budget API
             description: All API related Budget application
             version: 1.0.0
+        securityDefinitions:
+            Bearer:
+                type: apiKey
+                description: 'Value should be : {Bearer TOKEN} obtain by /api/login_check'
+                name: Authorization
+                in: header
+                default: 'Bearer '
         paths:
             /api/login_check:
                 post:
@@ -19,6 +26,7 @@ nelmio_api_doc:
                         required: true
                         schema:
                             $ref: "#/definitions/AuthenticationContent"
+            #### Account ####
             /api/accounts:
                 post:
                     tags:
@@ -101,10 +109,57 @@ nelmio_api_doc:
                             $ref: "#/definitions/AuthenticationOutput"
                     '400':
                         description: Bad request. Please check your request
+            #### Bank ####
+            /api/banks:
+                get:
+                    tags:
+                        - Bank
+                    summary: List bank available
+                    description: Return list bank available according different parameters
+                parameters:
+                    - in: query
+                      name: search
+                      type: string
+                      required: true
+                      description: Search terms to return list bank
+                responses:
+                    '200':
+                        description: Successful list bank according search filter
+                        schema:
+                            $ref: "#/definitions/ListBankOutput"
 
 
 
         definitions:
+            DefineNewPasswordInput:
+                type: object
+                properties:
+                    email:
+                        type: string
+                        required: true
+                    password:
+                        type: string
+                        required: true
+            ListBankOutput:
+                type: array
+                items:
+                    $ref: "#/definitions/BankOutput"
+            BankOutput:
+                type: object
+                properties:
+                    name:
+                        type: string
+                        required: true
+                    slug:
+                        type: string
+                        required: true
+            JWTErrorOutput:
+                type: object
+                properties:
+                    message:
+                        type: string
+                        required: true
+
             AuthenticationOutput:
                 type: object
                 properties:
