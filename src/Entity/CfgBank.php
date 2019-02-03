@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class CfgBank
  *
  * @ORM\Table(name="amo_cfg_bank")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Domain\Common\Repository\CfgBankRepository")
  */
 class CfgBank extends AbstractCfgEntity
 {
