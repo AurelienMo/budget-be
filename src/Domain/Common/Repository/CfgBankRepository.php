@@ -38,6 +38,5 @@ class CfgBankRepository extends EntityRepository
         return $qb
             ->getQuery()
             ->getResult();
-
     }
 }
