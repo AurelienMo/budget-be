@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 use App\Domain\Common\EntityFactory\BankAccountFactory;
 use App\Domain\Common\EntityFactory\UserFactory;
+use App\Entity\AbstractEntity;
 use App\Entity\Account;
 use App\Entity\CfgBank;
+use App\Entity\GroupUser;
 use App\Entity\User;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -269,5 +271,68 @@ class DoctrineContext implements Context
             $this->getManager()->persist($account);
         }
         $this->getManager()->flush();
+    }
+
+    /**
+     * @Given account with name :accountName should have following id :identifier
+     *
+     * @throws ReflectionException
+     */
+    public function accountWithNameShouldHaveFollowingId($accountName, $identfier)
+    {
+        $account = $this->getManager()->getRepository(Account::class)->findOneBy(['name' => $accountName]);
+        $this->setUuid($account, $identfier);
+        $this->getManager()->flush();
+    }
+
+    /**
+     * @Given user :identifier should created following group:
+     *
+     * @throws Exception
+     */
+    public function userShouldCreatedFollowingGroup($identifier, TableNode $table)
+    {
+        foreach ($table->getHash() as $hash) {
+            /** @var User $user */
+            $user = $this->getManager()->getRepository(User::class)->loadUserByUsername($identifier);
+            $group = new GroupUser(
+                $hash['name'],
+                $user
+            );
+            $this->getManager()->persist($group);
+            $user->defineGroup($group);
+        }
+        $this->getManager()->flush();
+    }
+
+    /**
+     * @Given users have following group:
+     *
+     * @throws NonUniqueResultException
+     */
+    public function usersHaveFollowingGroup(TableNode $table)
+    {
+        foreach ($table->getHash() as $hash) {
+            /** @var User $user */
+            $user = $this->getManager()->getRepository(User::class)->loadUserByUsername($hash['username']);
+            $group = $this->getManager()->getRepository(GroupUser::class)->findOneBy(['slug' => $hash['slugGroup']]);
+            $user
+                ->defineGroup($group);
+        }
+        $this->getManager()->flush();
+    }
+
+    /**
+     * @param AbstractEntity $entity
+     * @param string         $uuid
+     *
+     * @throws ReflectionException
+     */
+    private function setUuid(AbstractEntity $entity, string $uuid)
+    {
+        $reflection = new \ReflectionClass($entity);
+        $property = $reflection->getProperty('id');
+        $property->setAccessible(true);
+        $property->setValue($entity, $uuid);
     }
 }

@@ -12,7 +12,7 @@ Feature: As an auth user, I need to be able to create bank account
     And I enable user "johndoe"
 
   Scenario: [Fail] Submit request with an anonymous user
-    When I send a "GET" request to "/api/banks"
+    When I send a "GET" request to "/api/bank-accounts"
     Then the response status code should be 401
     And the JSON node "message" should be equal to "Merci de vous authentifier."
 

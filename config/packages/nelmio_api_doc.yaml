@@ -140,8 +140,125 @@ nelmio_api_doc:
                         - Bank account
                     summary: List bank accounts
                     description: List bank accounts for auth user
+            /api/bank-accounts/{id}:
+                get:
+                    tags:
+                        - Bank account
+                    summary: Detail bank account information
+                    description: Show detail bank account
+                    parameters:
+                        - in: path
+                          name: id
+                          type: string
+                          required: true
 
         definitions:
+            ListDetailBankOutput:
+                type: object
+                properties:
+                    id:
+                        type: string
+                        required: true
+                    name:
+                        type: string
+                        required: true
+                    cfgBank:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                required: true
+                            slug:
+                                type: string
+                                required: true
+                    initialBalance:
+                        type: number
+                        required: true
+                    balance:
+                        type: number
+                        required: true
+                    displayInGroup:
+                        type: boolean
+                        required: true
+                    createdAt:
+                        type: string
+                        required: true
+                    updatedAt:
+                        type: string
+                        required: true
+                    operationsAuto:
+                        type: array
+                        items:
+                            $ref: "#/definitions/OperationAutoOutput"
+                    operationsManual:
+                        type: array
+                        items:
+                            $ref: "#/definitions/OperationManualOutput"
+            OperationManualOutput:
+                type: object
+                properties:
+                    id:
+                        type: string
+                        required: true
+                    beneficiary:
+                        type: string
+                        required: true
+                    amount:
+                        type: number
+                        required: true
+                    dateOperation:
+                        type: string
+                        required: true
+                    createdAt:
+                        type: string
+                        required: true
+                    cfgCategoryOperation:
+                        $ref: "#/definitions/CfgCategoryOperation"
+                    cfgTypeOperation:
+                        $ref: "#/definitions/CfgTypeOperation"
+            OperationAutoOutput:
+                type: object
+                properties:
+                    id:
+                        type: string
+                        required: true
+                    beneficiary:
+                        type: string
+                        required: true
+                    amount:
+                        type: number
+                        required: true
+                    activated:
+                        type: boolean
+                        required: true
+                    dateOperation:
+                        type: string
+                        required: true
+                    createdAt:
+                        type: string
+                        required: true
+                    cfgCategoryOperation:
+                        $ref: "#/definitions/CfgCategoryOperation"
+                    cfgTypeOperation:
+                        $ref: "#/definitions/CfgTypeOperation"
+            CfgCategoryOperation:
+                type: object
+                properties:
+                    name:
+                        type: string
+                        required: true
+                    slug:
+                        type: string
+                        required: true
+            CfgTypeOperation:
+                type: object
+                properties:
+                    name:
+                        type: string
+                        required: true
+                    slug:
+                        type: string
+                        required: true
             HTTPErrorOutput:
                 type: object
                 properties:
