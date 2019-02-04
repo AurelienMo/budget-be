@@ -4,37 +4,29 @@
             xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping
         http://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
 >
-    <class name="App\Entity\Account">
+    <class name="App\Entity\OperationManual">
         <attribute name="id">
-            <group>list_accounts</group>
             <group>detail_account</group>
         </attribute>
-        <attribute name="name">
-            <group>list_accounts</group>
+        <attribute name="beneficiary">
             <group>detail_account</group>
         </attribute>
-        <attribute name="initialBalance">
-            <group>list_accounts</group>
+        <attribute name="amount">
             <group>detail_account</group>
         </attribute>
-        <attribute name="balance">
-            <group>list_accounts</group>
-            <group>detail_account</group>
-        </attribute>
-        <attribute name="displayInGroup">
-            <group>list_accounts</group>
+        <attribute name="dateOperation">
             <group>detail_account</group>
         </attribute>
         <attribute name="createdAt">
-            <group>list_accounts</group>
             <group>detail_account</group>
         </attribute>
         <attribute name="updatedAt">
-            <group>list_accounts</group>
             <group>detail_account</group>
         </attribute>
-        <attribute name="cfgBank">
-            <group>list_accounts</group>
+        <attribute name="cfgCategoryOperation">
+            <group>detail_account</group>
+        </attribute>
+        <attribute name="cfgTypeOperation">
             <group>detail_account</group>
         </attribute>
     </class>

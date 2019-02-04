@@ -127,4 +127,9 @@ class Account extends AbstractEntity
     {
         return $this->user;
     }
+
+    public function updateBalance(float $amount)
+    {
+        $this->balance += $amount;
+    }
 }

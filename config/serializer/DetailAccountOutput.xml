@@ -4,15 +4,11 @@
             xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping
         http://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
 >
-    <class name="App\Entity\CfgBank">
-        <attribute name="name">
-            <group>list_bank</group>
-            <group>list_accounts</group>
+    <class name="App\Domain\BankAccount\Detail\DetailAccountOutput">
+        <attribute name="account">
             <group>detail_account</group>
         </attribute>
-        <attribute name="slug">
-            <group>list_bank</group>
-            <group>list_accounts</group>
+        <attribute name="operationsManual">
             <group>detail_account</group>
         </attribute>
     </class>

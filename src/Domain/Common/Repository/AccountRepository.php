@@ -15,6 +15,7 @@ namespace App\Domain\Common\Repository;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * Class AccountRepository
@@ -29,5 +30,21 @@ class AccountRepository extends EntityRepository
                     ->setParameter('user', $user)
                     ->getQuery()
                     ->getResult();
+    }
+
+    /**
+     * @param string|null $identifier
+     *
+     * @return mixed
+     *
+     * @throws NonUniqueResultException
+     */
+    public function loadById(?string $identifier)
+    {
+        return $this->createQueryBuilder('a')
+                    ->where('a.id = :identifier')
+                    ->setParameter('identifier', $identifier)
+                    ->getQuery()
+                    ->getOneOrNullResult();
     }
 }

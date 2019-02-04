@@ -37,7 +37,7 @@ abstract class AbstractOperation extends AbstractEntity
     /**
      * @var CfgCategoryOperation
      *
-     * @ORM\OneToOne(targetEntity="CfgCategoryOperation")
+     * @ORM\ManyToOne(targetEntity="CfgCategoryOperation")
      * @ORM\JoinColumn(name="amo_cfg_category_operation_id", referencedColumnName="id")
      */
     protected $cfgCategoryOperation;
@@ -45,7 +45,7 @@ abstract class AbstractOperation extends AbstractEntity
     /**
      * @var CfgTypeOperation
      *
-     * @ORM\OneToOne(targetEntity="CfgTypeOperation")
+     * @ORM\ManyToOne(targetEntity="CfgTypeOperation")
      * @ORM\JoinColumn(name="amo_cfg_type_operation_id", referencedColumnName="id")
      */
     protected $cfgTypeOperation;
@@ -53,17 +53,10 @@ abstract class AbstractOperation extends AbstractEntity
     /**
      * @var Account
      *
-     * @ORM\OneToOne(targetEntity="Account")
+     * @ORM\ManyToOne(targetEntity="Account")
      * @ORM\JoinColumn(name="amo_account_id", referencedColumnName="id")
      */
     protected $account;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     */
-    protected $dateOperation;
 
     /**
      * AbstractOperation constructor.
@@ -73,7 +66,6 @@ abstract class AbstractOperation extends AbstractEntity
      * @param CfgCategoryOperation $cfgCategoryOperation
      * @param string               $beneficiary
      * @param float                $amount
-     * @param \DateTime|null       $dateOperation
      *
      * @throws \Exception
      */
@@ -82,15 +74,13 @@ abstract class AbstractOperation extends AbstractEntity
         CfgTypeOperation $cfgTypeOperation,
         CfgCategoryOperation $cfgCategoryOperation,
         string $beneficiary,
-        float $amount,
-        \DateTime $dateOperation = null
+        float $amount
     ) {
         $this->account = $account;
         $this->cfgTypeOperation = $cfgTypeOperation;
         $this->cfgCategoryOperation = $cfgCategoryOperation;
         $this->beneficiary = $beneficiary;
         $this->amount = $amount;
-        $this->dateOperation = !is_null($dateOperation) ? $dateOperation : new \DateTime();
         parent::__construct();
     }
 
@@ -132,13 +122,5 @@ abstract class AbstractOperation extends AbstractEntity
     public function getAccount(): Account
     {
         return $this->account;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getDateOperation(): \DateTime
-    {
-        return $this->dateOperation;
     }
 }

@@ -235,4 +235,12 @@ class User extends AbstractEntity implements UserInterface
         $this->status = self::STATUS_ACTIVATED;
         $this->tokenResetPassword = null;
     }
+
+    /**
+     * @param GroupUser $groupUser
+     */
+    public function defineGroup(GroupUser $groupUser)
+    {
+        $this->groupUser = $groupUser;
+    }
 }
