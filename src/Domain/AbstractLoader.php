@@ -60,12 +60,12 @@ abstract class AbstractLoader
     }
 
     /**
-     * @param null  $datas
+     * @param mixed $datas
      * @param array $context
      *
      * @return string
      */
-    protected function sendDatasFormatted($datas = null, array $context = [])
+    protected function sendDatasFormatted($datas, array $context = [])
     {
         return $this->serializer->serialize(
             $datas,

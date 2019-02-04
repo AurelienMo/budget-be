@@ -14,6 +14,10 @@ declare(strict_types=1);
 namespace App\Actions\BankAccount;
 
 use App\Actions\AbstractApiAction;
+use App\Domain\BankAccount\Detail\DetailAccountInput;
+use App\Domain\BankAccount\Detail\Loader;
+use App\Domain\BankAccount\Detail\RequestResolver;
+use Doctrine\ORM\NonUniqueResultException;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,12 +29,35 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ShowBankAccount extends AbstractApiAction
 {
+    /** @var RequestResolver */
+    protected $requestResolver;
+
+    /** @var Loader */
+    protected $loader;
+
+    /**
+     * ShowBankAccount constructor.
+     *
+     * @param RequestResolver $requestResolver
+     * @param Loader          $loader
+     */
+    public function __construct(
+        RequestResolver $requestResolver,
+        Loader $loader
+    ) {
+        $this->requestResolver = $requestResolver;
+        $this->loader = $loader;
+    }
+
     /**
      * @Route("/bank-accounts/{id}", name="show_bank_accounts", methods={"GET"})
      *
      * @param Request $request
      *
      * @return Response
+     *
+     * @throws NonUniqueResultException
+     * @throws \ReflectionException
      *
      * @SWG\Response(
      *     response="200",
@@ -56,5 +83,13 @@ class ShowBankAccount extends AbstractApiAction
      */
     public function showBankAccount(Request $request)
     {
+        /** @var DetailAccountInput $input */
+        $input = $this->requestResolver->resolve($request);
+        $datas = $this->loader->load($input);
+
+        return $this->sendResponse(
+            $datas,
+            Response::HTTP_OK
+        );
     }
 }

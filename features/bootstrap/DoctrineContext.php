@@ -16,7 +16,11 @@ use App\Domain\Common\EntityFactory\UserFactory;
 use App\Entity\AbstractEntity;
 use App\Entity\Account;
 use App\Entity\CfgBank;
+use App\Entity\CfgCategoryOperation;
+use App\Entity\CfgTypeOperation;
 use App\Entity\GroupUser;
+use App\Entity\OperationAuto;
+use App\Entity\OperationManual;
 use App\Entity\User;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -318,6 +322,29 @@ class DoctrineContext implements Context
             $group = $this->getManager()->getRepository(GroupUser::class)->findOneBy(['slug' => $hash['slugGroup']]);
             $user
                 ->defineGroup($group);
+        }
+        $this->getManager()->flush();
+    }
+
+    /**
+     * @Given following operations manual has been added to account with name :name:
+     *
+     * @throws Exception
+     */
+    public function followingOperationsManualHasBeenAddedToAccountWithId($name, TableNode $table)
+    {
+        $account = $this->getManager()->getRepository(Account::class)->findOneBy(['name' => $name]);
+        foreach ($table->getHash() as $hash) {
+            $opeManual = new OperationManual(
+                $account,
+                $this->getManager()->getRepository(CfgTypeOperation::class)->findOneBy(['slug' => $hash['cfgTypeOperation']]),
+                $this->getManager()->getRepository(CfgCategoryOperation::class)->findOneBy(['slug' => $hash['cfgCategoryOperation']]),
+                $hash['beneficiary'],
+                (float) $hash['amount'],
+                \DateTime::createFromFormat('d/m/Y', $hash['dateOperation'])
+            );
+            $account->updateBalance((float) $hash['amount']);
+            $this->getManager()->persist($opeManual);
         }
         $this->getManager()->flush();
     }

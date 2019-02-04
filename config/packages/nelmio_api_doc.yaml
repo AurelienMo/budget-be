@@ -186,10 +186,6 @@ nelmio_api_doc:
                     updatedAt:
                         type: string
                         required: true
-                    operationsAuto:
-                        type: array
-                        items:
-                            $ref: "#/definitions/OperationAutoOutput"
                     operationsManual:
                         type: array
                         items:
@@ -212,29 +208,7 @@ nelmio_api_doc:
                     createdAt:
                         type: string
                         required: true
-                    cfgCategoryOperation:
-                        $ref: "#/definitions/CfgCategoryOperation"
-                    cfgTypeOperation:
-                        $ref: "#/definitions/CfgTypeOperation"
-            OperationAutoOutput:
-                type: object
-                properties:
-                    id:
-                        type: string
-                        required: true
-                    beneficiary:
-                        type: string
-                        required: true
-                    amount:
-                        type: number
-                        required: true
-                    activated:
-                        type: boolean
-                        required: true
-                    dateOperation:
-                        type: string
-                        required: true
-                    createdAt:
+                    updatedAt:
                         type: string
                         required: true
                     cfgCategoryOperation:
