@@ -24,8 +24,8 @@ class OperationManualRepository extends EntityRepository
     public function loadOperationsByAccount(Account $account)
     {
         return $this->createQueryBuilder('om')
-//            ->innerJoin('om.cfgCategoryOperation', 'catope', 'WITH', 'om.cfgCategoryOperation = catope.id')
-//            ->innerJoin('om.cfgTypeOperation', 'typeope', 'WITH', 'om.cfgTypeOperation = typeope.id')
+            ->innerJoin('om.cfgCategoryOperation', 'catope', 'WITH', 'om.cfgCategoryOperation = catope.id')
+            ->innerJoin('om.cfgTypeOperation', 'typeope', 'WITH', 'om.cfgTypeOperation = typeope.id')
             ->where('om.account = :account')
             ->setParameter('account', $account)
             ->getQuery()
