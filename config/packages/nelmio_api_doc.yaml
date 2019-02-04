@@ -116,18 +116,12 @@ nelmio_api_doc:
                         - Bank
                     summary: List bank available
                     description: Return list bank available according different parameters
-                parameters:
-                    - in: query
-                      name: search
-                      type: string
-                      required: true
-                      description: Search terms to return list bank
-                security: Bearer
-                responses:
-                    '200':
-                        description: Successful list bank according search filter
-                        schema:
-                            $ref: "#/definitions/ListBankOutput"
+                    parameters:
+                        - in: query
+                          name: search
+                          type: string
+                          required: true
+                          description: Search terms to return list bank
             #### Bank Account ####
             /api/bank-accounts:
                 post:
@@ -135,15 +129,25 @@ nelmio_api_doc:
                         - Bank account
                     summary: Create bank account
                     description: Create bank account for auth user and return list bank account
-                parameters:
-                    - in: body
-                      name: body
-                      required: true
-                      schema:
-                          $ref: "#/definitions/PayloadNewBankAccountInput"
-
+                    parameters:
+                        - in: body
+                          name: body
+                          required: true
+                          schema:
+                              $ref: "#/definitions/PayloadNewBankAccountInput"
+                get:
+                    tags:
+                        - Bank account
+                    summary: List bank accounts
+                    description: List bank accounts for auth user
 
         definitions:
+            HTTPErrorOutput:
+                type: object
+                properties:
+                    message:
+                        type: string
+                        required: true
             PayloadNewBankAccountInput:
                 type: object
                 properties:

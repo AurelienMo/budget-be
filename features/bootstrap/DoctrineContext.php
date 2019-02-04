@@ -11,13 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use App\Domain\Common\EntityFactory\BankAccountFactory;
 use App\Domain\Common\EntityFactory\UserFactory;
 use App\Entity\Account;
+use App\Entity\CfgBank;
 use App\Entity\User;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -248,5 +251,23 @@ class DoctrineContext implements Context
                 )
             );
         }
+    }
+
+    /**
+     * @Given users has following bank accounts:
+     *
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     * @throws Exception
+     */
+    public function usersHasFollowingBankAccounts(TableNode $userAccounts)
+    {
+        foreach ($userAccounts->getHash() as $hash) {
+            $user = $this->getManager()->getRepository(User::class)->loadUserByUsername($hash['user']);
+            $bank = $this->getManager()->getRepository(CfgBank::class)->loadBySlug($hash['bank']);
+            $account = BankAccountFactory::create($bank, $hash['name'], (float) $hash['initialBalance'], $user);
+            $this->getManager()->persist($account);
+        }
+        $this->getManager()->flush();
     }
 }
