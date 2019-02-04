@@ -70,9 +70,8 @@ Feature: As an auth user, I need to be able to show detail account
     """
     """
     Then the response status code should be 200
-    And the JSON node "account.name" should be equal to "JDoe Boursorama"
-    And the JSON node "account.id" should be equal to "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
-    And the JSON node "account.balance" should be equal to "912"
-    And the JSON node "account.displayInGroup" should be false
-    And the JSON node "account.cfgBank.name" should be equal to "Boursorama"
-    And the JSON node "operationsManual" should have 2 elements
+    And the JSON node "name" should be equal to "JDoe Boursorama"
+    And the JSON node "id" should be equal to "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+    And the JSON node "balance" should be equal to "912"
+    And the JSON node "displayInGroup" should be false
+    And the JSON node "cfgBank.name" should be equal to "Boursorama"
