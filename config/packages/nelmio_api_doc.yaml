@@ -151,8 +151,32 @@ nelmio_api_doc:
                           name: id
                           type: string
                           required: true
+            #### Operations ###
+            /api/bank-accounts/{id}/operations:
+                get:
+                    tags:
+                        - Operations
+                    summary: List operations
+                    description: List all operations for given account
+                    parameters:
+                        - in: path
+                          name: id
+                          type: string
+                          required: true
+                        - in: query
+                          name: offset
+                          type: integer
+                          default: 0
+                        - in: query
+                          name: limit
+                          type: integer
+                          default: 30
 
         definitions:
+            ListOperationsOutput:
+                type: array
+                items:
+                    $ref: "#/definitions/OperationManualOutput"
             ListDetailBankOutput:
                 type: object
                 properties:
@@ -186,10 +210,6 @@ nelmio_api_doc:
                     updatedAt:
                         type: string
                         required: true
-                    operationsManual:
-                        type: array
-                        items:
-                            $ref: "#/definitions/OperationManualOutput"
             OperationManualOutput:
                 type: object
                 properties:
