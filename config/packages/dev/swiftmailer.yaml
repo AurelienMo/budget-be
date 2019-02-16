@@ -1,4 +1,7 @@
 swiftmailer:
-    spool:
-        type: file
-    disable_delivery: true
+    transport: smtp
+    host: localhost
+    username: null
+    password: null
+    port: 1025
+    spool: { type: memory }

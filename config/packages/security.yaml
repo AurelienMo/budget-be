@@ -23,6 +23,9 @@ security:
         public_doc_api:
             pattern: ^/api/doc
             anonymous: true
+        public_account:
+            pattern: ^/api/accounts
+            anonymous: true
         api:
             pattern:   ^/api
             stateless: true
@@ -31,8 +34,6 @@ security:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
             provider: user_provider
-        main:
-            anonymous: true
 
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

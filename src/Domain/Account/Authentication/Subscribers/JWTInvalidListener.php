@@ -28,8 +28,8 @@ class JWTInvalidListener
     public function onJWTInvalid(JWTInvalidEvent $event)
     {
         $response = new JWTAuthenticationFailureResponse(
-            'Votre session a expiré, merci de vous reconnecter',
-            Response::HTTP_FORBIDDEN
+            'Identifiants invalides.',
+            Response::HTTP_UNAUTHORIZED
         );
 
         $event->setResponse($response);

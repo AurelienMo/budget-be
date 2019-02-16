@@ -1,71 +1,108 @@
 #!/usr/bin/env bash
 
-#PhpMyAdmin preparation
-debconf-set-selections <<< "mysql-server mysql-server/root_password password root"
-debconf-set-selections <<< "mysql-server mysql-server/root_password_again password root"
-debconf-set-selections <<< "phpmyadmin phpmyadmin/dbconfig-install boolean true"
-debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm password root"
-debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/admin-pass password root"
-debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/app-pass password root"
-debconf-set-selections <<< "phpmyadmin phpmyadmin/reconfigure-webserver multiselect none"
+# VARIABLES
+DBPASSWD=root
+DBNAME=budgetbe
+# Execute build machine virtual
+main() {
+    update_go
+    apache_go
+    php_go
+    mysql_go
+    tools_go
+    nodenpm_go
+    configure_go
+    maildev_go
+}
 
-apt-get update
-apt-get -y install apache2 php7.2 libapache2-mod-php7.2 php-curl php-gd php-mysql php-mbstring php-intl php-soap php-xml php-xdebug php-zip php-opcache php-imagick mysql-server mysql-client curl php-cli git acl unzip phpmyadmin php-sqlite3 sqlite3
-cd ~
-curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh
-sudo bash nodesource_setup.sh
-sudo apt install -y nodejs
+update_go() {
+    sudo apt-add-repository ppa:ondrej/php
+    sudo apt-get update
+}
 
-# Apache
-a2enmod rewrite
-sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
-sed -i s/\${APACHE_RUN_USER}/vagrant/g /etc/apache2/apache2.conf
-sed -i s/\${APACHE_RUN_GROUP}/vagrant/g /etc/apache2/apache2.conf
-sed -i "s#DocumentRoot /var/www/html#DocumentRoot /var/www/html/public#g" /etc/apache2/sites-available/000-default.conf
+apache_go() {
+    apt-get -y install apache2
+    a2enmod rewrite
+    sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
+    sed -i s/\${APACHE_RUN_USER}/vagrant/g /etc/apache2/apache2.conf
+    sed -i s/\${APACHE_RUN_GROUP}/vagrant/g /etc/apache2/apache2.conf
+    sed -i "s#DocumentRoot /var/www/html#DocumentRoot /var/www/html/public#g" /etc/apache2/sites-available/000-default.conf
+}
 
-# PHP
-sed -i "s/max_execution_time = 30/max_execution_time = 0/g" /etc/php/7.2/cli/php.ini
-cat <<EOT > /etc/php/7.2/apache2/conf.d/31-xdebug.ini
+mysql_go() {
+    debconf-set-selections <<< "mysql-server mysql-server/root_password password $DBPASSWD"
+    debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $DBPASSWD"
+    debconf-set-selections <<< "phpmyadmin phpmyadmin/dbconfig-install boolean true"
+    debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm password $DBPASSWD"
+    debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/admin-pass password $DBPASSWD"
+    debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/app-pass password $DBPASSWD"
+    debconf-set-selections <<< "phpmyadmin phpmyadmin/reconfigure-webserver multiselect none"
+
+    sudo apt-get -y install mysql-server
+    sudo apt-get -y install mysql-client
+    sudo apt-get -y install phpmyadmin
+
+    mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS $DBNAME CHARACTER SET utf8 COLLATE utf8_general_ci;"
+}
+
+php_go() {
+    sudo apt-get -y install php7.2
+    sudo apt-get -y install libapache2-mod-php7.2
+    sudo apt-get -y install php7.2-curl
+    sudo apt-get -y install php7.2-gd
+    sudo apt-get -y install php7.2-mysql
+    sudo apt-get -y install php7.2-sqlite
+    sudo apt-get -y install php7.2-mbstring
+    sudo apt-get install -y php7.2-intl
+    sudo apt-get install -y php7.2-xsl
+    sudo apt-get install -y php7.2-xdebug
+    sudo apt-get -y install php7.2-zip
+    sudo apt-get -y install php7.2-opcache
+    sudo apt-get -y install php-imagick
+    sudo apt-get -y install jpegoptim
+    sudo apt-get -y install ruby-sass
+    cat <<EOT > /etc/php/7.2/apache2/conf.d/30-xdebug.ini
 xdebug.remote_enable = 1
 xdebug.remote_connect_back = 1
-xdebug.remote_port = 9000
+xdebug.remote_port = 9001
 xdebug.scream=0
 xdebug.cli_color=1
 xdebug.show_local_vars=1
 EOT
-cat <<EOT > /etc/php/7.2/cli/conf.d/31-xdebug.ini
+    cat <<EOT > /etc/php/7.2/cli/conf.d/30-xdebug.ini
 xdebug.remote_enable = 1
 xdebug.remote_connect_back = 1
-xdebug.remote_port = 9000
+xdebug.remote_port = 9001
 xdebug.scream=0
 xdebug.cli_color=1
 xdebug.show_local_vars=1
 EOT
+}
 
-# MySQL
-mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS budgetbe CHARACTER SET utf8 COLLATE utf8_general_ci;"
+nodenpm_go() {
+    sudo apt-get -y install nodejs build-essential
+    sudo apt-get -y install npm
+}
 
-# Composer
-curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+tools_go() {
+    sudo apt-get -y install curl php7.2-cli acl unzip
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+}
 
-# Dart Sass
-cd /home/vagrant
-wget https://github.com/sass/dart-sass/releases/download/1.15.2/dart-sass-1.15.2-linux-x64.tar.gz
-tar zxvf dart-sass-1.15.2-linux-x64.tar.gz
-ln -s /home/vagrant/dart-sass/sass /usr/bin/sass
-chown -R vagrant:vagrant dart-sass
+configure_go() {
+    if ! grep "cd /var/www/html" /home/vagrant/.bashrc ; then
+        echo "cd /var/www/html" >> /home/vagrant/.bashrc
+    fi
+    cd /var/www/html
+    sudo -u vagrant composer install
+    sudo npm install
+}
 
-# App related
-cd /var/www/html
-phpdismod xdebug
-composer install --no-scripts
-php bin/console assets:install --symlink
-echo '' >> /home/vagrant/.bashrc
-echo 'cd /var/www/html' >> /home/vagrant/.bashrc
-chown vagrant:vagrant -R .
+maildev_go() {
+    sudo apt install -y nodejs-legacy
+    npm install -g maildev
+}
 
-# Clean
-service apache2 restart
-apt-get -y autoremove
-
+main
 exit 0
